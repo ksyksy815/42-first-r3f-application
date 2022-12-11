@@ -66,7 +66,8 @@ export default function Experience() {
 
     const materialArgs = {
       args: [{
-        color: "green"
+        color: "green",
+        wireframe: true,
       }]
     } 
 
