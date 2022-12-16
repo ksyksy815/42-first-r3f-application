@@ -1,12 +1,14 @@
 import { useRef } from "react";
-import { useFrame, extend } from "@react-three/fiber";
+import { useThree, useFrame, extend } from "@react-three/fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import helper from "./helper";
 
-// extend({  })
+extend({ OrbitControls });
 
 export default function Experience() {
   /* Hooks */
+
+  const { camera, gl: renderer } = useThree();
 
   const groupRef = useRef();
   const cubeRef = useRef();
@@ -76,6 +78,7 @@ export default function Experience() {
 
   return (
     <>
+      <orbitControls args={[camera, renderer.domElement]} />
       <group ref={groupRef}>
         {renderSphere()}
         {renderBox()}
