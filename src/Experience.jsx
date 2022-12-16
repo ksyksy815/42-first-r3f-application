@@ -8,25 +8,19 @@ export default function Experience() {
 
   /* Helpers */
 
+  const getMeshParams = (position, rotation, scale, ...restParams) => ({ position, rotation, scale, ...restParams })
+
+  const getGeometryArgs = (radius, width, height) => ({ args: [radius, width, height] })
+
+  const getMaterialArgs = (color, wireframe) => ({ args: [{color, wireframe: wireframe || false}] })
+
   
   /* Render */
 
   const renderSphere = () => {
-    const meshParams = {
-      position: [-1.5, -0.5, 0],
-      scale: 2
-    }
-
-    const geoParams = {
-      args: [0.5, 20, 20]
-    }
-
-    const materialArgs = {
-      args: [{
-        color: "pink",
-        wireframe: true,
-      }]
-    } 
+    const meshParams = getMeshParams([-1.5, -0.5, 0], null, 2) 
+    const geoParams = getGeometryArgs(0.5, 20, 20)
+    const materialArgs = getMaterialArgs('pink', true)
 
     return (
       <mesh {...helper.generateMeshProps({...meshParams})} >
@@ -37,17 +31,8 @@ export default function Experience() {
   }
 
   const renderBox = () => {
-    const meshParams = {
-      position: [2, -1, 0],
-      rotation: [2, 0, 2],
-    }
-
-    const materialArgs = {
-      args: [{
-        color: "mediumpurple",
-        wireframe: true,
-      }]
-    } 
+    const meshParams = getMeshParams([2, -1, 0], [2, 0, 2])
+    const materialArgs = getMaterialArgs('mediumpurple', true)
     
     return (
       <mesh {...helper.generateMeshProps({...meshParams})} >
@@ -58,18 +43,8 @@ export default function Experience() {
   }
 
   const renderPlane = () => {
-    const meshParams = {
-      position: [0, -2, 0],
-      rotation: [-1.8, 0, 0],
-      scale: 4,
-    }
-
-    const materialArgs = {
-      args: [{
-        color: "green",
-        wireframe: true,
-      }]
-    } 
+    const meshParams = getMeshParams([0, -2, 0], [-1.8, 0, 0], 4)
+    const materialArgs = getMaterialArgs('green')
 
     return (
       <mesh {...helper.generateMeshProps({...meshParams})} >
