@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useThree, useFrame, extend } from "@react-three/fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import CustomObject from "./CustomObject";
 import helper from "./helper";
 
 extend({ OrbitControls });
@@ -96,6 +97,7 @@ export default function Experience() {
           {renderSphere()}
           {renderBox()}
         </group>
+        <CustomObject />
         {renderPlane()}
       </>
     );
