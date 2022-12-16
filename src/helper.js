@@ -1,10 +1,12 @@
 class Helper {
-  getMeshParams = (position, rotation, scale, ...restParams) => ({
-    position,
-    rotation,
-    scale,
-    ...restParams,
-  });
+  getMeshParams = (position, rotation, scale, ...restParams) => {
+    return {
+      position,
+      rotation,
+      scale,
+      ...restParams[0],
+    };
+  };
 
   getGeometryArgs = (radius, width, height, ...restParams) => ({
     args: [radius, width, height],
@@ -22,11 +24,13 @@ class Helper {
       rotation: [0, 0, 0],
     };
 
+    const additionalProps = restProps && restProps[0];
+
     return {
       position: meshParams?.position || defaultValues.position,
       scale: meshParams?.scale || defaultValues.scale,
       rotation: meshParams?.rotation || defaultValues.rotation,
-      ...restProps,
+      ...additionalProps,
     };
   };
 
@@ -52,11 +56,13 @@ class Helper {
       ],
     };
 
+    const additionalProps = restProps && restProps[0];
+
     const argsValue = materialProps?.args || [...defaultValues.args];
 
     return {
       args: argsValue,
-      ...restProps,
+      ...additionalProps,
     };
   };
 }

@@ -1,7 +1,20 @@
+import { useRef } from "react";
+import { useFrame, extend } from "@react-three/fiber";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import helper from "./helper";
+
+// extend({  })
 
 export default function Experience() {
   /* Hooks */
+
+  const groupRef = useRef();
+  const cubeRef = useRef();
+
+  useFrame((state, delta) => {
+    // groupRef.current.rotation.y += delta;
+    cubeRef.current.rotation.y += delta;
+  });
 
   /* Helpers */
 
@@ -34,7 +47,7 @@ export default function Experience() {
     const materialArgs = helper.getMaterialArgs("mediumpurple");
 
     return (
-      <mesh {...helper.generateMeshProps({ ...meshParams })}>
+      <mesh {...helper.generateMeshProps({ ...meshParams }, { ref: cubeRef })}>
         <boxGeometry {...geoProps} />
         <meshBasicMaterial
           {...helper.generateMaterialProps({ ...materialArgs })}
@@ -63,8 +76,10 @@ export default function Experience() {
 
   return (
     <>
-      {renderSphere()}
-      {renderBox()}
+      <group ref={groupRef}>
+        {renderSphere()}
+        {renderBox()}
+      </group>
       {renderPlane()}
     </>
   );
