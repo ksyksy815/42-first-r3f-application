@@ -6,15 +6,16 @@ class Helper {
     ...restParams,
   });
 
-  getGeometryArgs = (radius, width, height) => ({
+  getGeometryArgs = (radius, width, height, ...restParams) => ({
     args: [radius, width, height],
+    ...restParams,
   });
 
   getMaterialArgs = (color, wireframe) => ({
     args: [{ color, wireframe: wireframe || false }],
   });
 
-  generateMeshProps = (meshParams) => {
+  generateMeshProps = (meshParams, ...restProps) => {
     const defaultValues = {
       position: [0, 0, 0],
       scale: 1,
@@ -25,20 +26,22 @@ class Helper {
       position: meshParams?.position || defaultValues.position,
       scale: meshParams?.scale || defaultValues.scale,
       rotation: meshParams?.rotation || defaultValues.rotation,
+      ...restProps,
     };
   };
 
-  generateGeoProps = (geoProps) => {
+  generateGeoProps = (geoProps, ...restProps) => {
     const defaultValues = {
       args: [1, 1, 1],
     };
 
     return {
       args: geoProps?.args || defaultValues.args,
+      ...restProps,
     };
   };
 
-  generateMaterialProps = (materialProps) => {
+  generateMaterialProps = (materialProps, ...restProps) => {
     const defaultValues = {
       args: [
         {
@@ -51,6 +54,7 @@ class Helper {
 
     return {
       args: argsValue,
+      ...restProps,
     };
   };
 }
