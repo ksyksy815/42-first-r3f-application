@@ -22,6 +22,19 @@ export default function Experience() {
 
   /* Render */
 
+  const renderApparatus = () => {
+    return <orbitControls args={[camera, renderer.domElement]} />;
+  };
+
+  const renderEnvironment = () => {
+    return (
+      <>
+        <directionalLight position={[1, 2, 3]} intensity={0.8} />
+        <ambientLight intensity={0.3} />
+      </>
+    );
+  };
+
   const renderSphere = () => {
     const meshParams = helper.getMeshParams([-2, 0, 0], null, 2);
     const geoParams = helper.getGeometryArgs(0.5);
@@ -30,7 +43,7 @@ export default function Experience() {
     return (
       <mesh {...helper.generateMeshProps({ ...meshParams })}>
         <sphereGeometry {...helper.generateGeoProps({ ...geoParams })} />
-        <meshBasicMaterial
+        <meshStandardMaterial
           {...helper.generateMaterialProps({ ...materialArgs })}
         />
       </mesh>
@@ -51,7 +64,7 @@ export default function Experience() {
     return (
       <mesh {...helper.generateMeshProps({ ...meshParams }, { ref: cubeRef })}>
         <boxGeometry {...geoProps} />
-        <meshBasicMaterial
+        <meshStandardMaterial
           {...helper.generateMaterialProps({ ...materialArgs })}
         />
       </mesh>
@@ -69,21 +82,30 @@ export default function Experience() {
     return (
       <mesh {...helper.generateMeshProps({ ...meshParams })}>
         <planeGeometry {...helper.generateGeoProps()} />
-        <meshBasicMaterial
+        <meshStandardMaterial
           {...helper.generateMaterialProps({ ...materialArgs })}
         />
       </mesh>
     );
   };
 
+  const renderScene = () => {
+    return (
+      <>
+        <group ref={groupRef}>
+          {renderSphere()}
+          {renderBox()}
+        </group>
+        {renderPlane()}
+      </>
+    );
+  };
+
   return (
     <>
-      <orbitControls args={[camera, renderer.domElement]} />
-      <group ref={groupRef}>
-        {renderSphere()}
-        {renderBox()}
-      </group>
-      {renderPlane()}
+      {renderApparatus()}
+      {renderEnvironment()}
+      {renderScene()}
     </>
   );
 }
