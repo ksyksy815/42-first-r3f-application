@@ -35,9 +35,11 @@ class Helper {
       args: [1, 1, 1],
     };
 
+    const additionalProps = restProps && restProps[0];
+
     return {
       args: geoProps?.args || defaultValues.args,
-      ...restProps,
+      ...additionalProps,
     };
   };
 

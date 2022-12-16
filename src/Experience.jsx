@@ -8,9 +8,9 @@ export default function Experience() {
   /* Render */
 
   const renderSphere = () => {
-    const meshParams = helper.getMeshParams([-1.5, -0.5, 0], null, 2);
-    const geoParams = helper.getGeometryArgs(0.5, 20, 20);
-    const materialArgs = helper.getMaterialArgs("pink", true);
+    const meshParams = helper.getMeshParams([-2, 0, 0], null, 2);
+    const geoParams = helper.getGeometryArgs(0.5);
+    const materialArgs = helper.getMaterialArgs("pink");
 
     return (
       <mesh {...helper.generateMeshProps({ ...meshParams })}>
@@ -23,12 +23,19 @@ export default function Experience() {
   };
 
   const renderBox = () => {
-    const meshParams = helper.getMeshParams([2, -1, 0], [2, 0, 2]);
-    const materialArgs = helper.getMaterialArgs("mediumpurple", true);
+    const meshParams = helper.getMeshParams(
+      [2, 0, 0],
+      [0, Math.PI * 0.25, 0],
+      1.5
+    );
+
+    const geoProps = helper.generateGeoProps(null, { scale: 3.5 });
+
+    const materialArgs = helper.getMaterialArgs("mediumpurple");
 
     return (
       <mesh {...helper.generateMeshProps({ ...meshParams })}>
-        <boxGeometry {...helper.generateGeoProps()} />
+        <boxGeometry {...geoProps} />
         <meshBasicMaterial
           {...helper.generateMaterialProps({ ...materialArgs })}
         />
@@ -37,8 +44,12 @@ export default function Experience() {
   };
 
   const renderPlane = () => {
-    const meshParams = helper.getMeshParams([0, -2, 0], [-1.8, 0, 0], 4);
-    const materialArgs = helper.getMaterialArgs("green");
+    const meshParams = helper.getMeshParams(
+      [0, -1, 0],
+      [-Math.PI * 0.5, 0, 0],
+      10
+    );
+    const materialArgs = helper.getMaterialArgs("greenyellow");
 
     return (
       <mesh {...helper.generateMeshProps({ ...meshParams })}>
