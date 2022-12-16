@@ -15,7 +15,14 @@ export default function Experience() {
   const cubeRef = useRef();
 
   useFrame((state, delta) => {
-    // groupRef.current.rotation.y += delta;
+    const { camera, clock } = state;
+
+    const angle = clock.elapsedTime;
+
+    camera.position.x = Math.sin(angle) * 5;
+    camera.position.z = Math.cos(angle) * 5;
+    camera.lookAt(0, 0, 0);
+
     cubeRef.current.rotation.y += delta;
   });
 
@@ -105,7 +112,7 @@ export default function Experience() {
 
   return (
     <>
-      {renderApparatus()}
+      {/* {renderApparatus()} */}
       {renderEnvironment()}
       {renderScene()}
     </>
