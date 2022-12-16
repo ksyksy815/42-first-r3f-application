@@ -1,5 +1,6 @@
 import "./style.css";
 import ReactDOM from "react-dom/client";
+import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import Experience from "./Experience.jsx";
 
@@ -13,7 +14,7 @@ const cameraSettings = {
 };
 
 root.render(
-  <Canvas camera={cameraSettings}>
+  <Canvas gl={{ antialias: true }} camera={cameraSettings}>
     <Experience />
   </Canvas>
 );
