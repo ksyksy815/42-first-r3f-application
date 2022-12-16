@@ -1,65 +1,120 @@
-import helper from './helper'
+import { useRef } from "react";
+import { useThree, useFrame, extend } from "@react-three/fiber";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import CustomObject from "./CustomObject";
+import helper from "./helper";
+
+extend({ OrbitControls });
 
 export default function Experience() {
-
-
   /* Hooks */
 
+  const { camera, gl: renderer } = useThree();
+
+  const groupRef = useRef();
+  const cubeRef = useRef();
+
+  useFrame((state, delta) => {
+    // const { camera, clock } = state;
+
+    // const angle = clock.elapsedTime;
+
+    // camera.position.x = Math.sin(angle) * 5;
+    // camera.position.z = Math.cos(angle) * 5;
+    // camera.lookAt(0, 0, 0);
+
+    cubeRef.current.rotation.y += delta;
+  });
 
   /* Helpers */
 
-  const getMeshParams = (position, rotation, scale, ...restParams) => ({ position, rotation, scale, ...restParams })
-
-  const getGeometryArgs = (radius, width, height) => ({ args: [radius, width, height] })
-
-  const getMaterialArgs = (color, wireframe) => ({ args: [{color, wireframe: wireframe || false}] })
-
-  
   /* Render */
 
+  const renderApparatus = () => {
+    return <orbitControls args={[camera, renderer.domElement]} />;
+  };
+
+  const renderEnvironment = () => {
+    return (
+      <>
+        <directionalLight position={[1, 2, 3]} intensity={0.8} />
+        <ambientLight intensity={0.3} />
+      </>
+    );
+  };
+
   const renderSphere = () => {
-    const meshParams = getMeshParams([-1.5, -0.5, 0], null, 2) 
-    const geoParams = getGeometryArgs(0.5, 20, 20)
-    const materialArgs = getMaterialArgs('pink', true)
+    const meshParams = helper.getMeshParams([-2, 0, 0], null, 2);
+    const geoParams = helper.getGeometryArgs(0.5);
+    const materialArgs = helper.getMaterialArgs("pink");
 
     return (
-      <mesh {...helper.generateMeshProps({...meshParams})} >
-        <sphereGeometry {...helper.generateGeoProps({...geoParams})} />
-        <meshBasicMaterial {...helper.generateMaterialProps({...materialArgs})}  />
+      <mesh {...helper.generateMeshProps({ ...meshParams })}>
+        <sphereGeometry {...helper.generateGeoProps({ ...geoParams })} />
+        <meshStandardMaterial
+          {...helper.generateMaterialProps({ ...materialArgs })}
+        />
       </mesh>
-    )
-  }
+    );
+  };
 
   const renderBox = () => {
-    const meshParams = getMeshParams([2, -1, 0], [2, 0, 2])
-    const materialArgs = getMaterialArgs('mediumpurple', true)
-    
+    const meshParams = helper.getMeshParams(
+      [2, 0, 0],
+      [0, Math.PI * 0.25, 0],
+      1.5
+    );
+
+    const geoProps = helper.generateGeoProps(null, { scale: 3.5 });
+
+    const materialArgs = helper.getMaterialArgs("mediumpurple");
+
     return (
-      <mesh {...helper.generateMeshProps({...meshParams})} >
-        <boxGeometry {...helper.generateGeoProps()} />
-        <meshBasicMaterial {...helper.generateMaterialProps({...materialArgs})}  />
+      <mesh {...helper.generateMeshProps({ ...meshParams }, { ref: cubeRef })}>
+        <boxGeometry {...geoProps} />
+        <meshStandardMaterial
+          {...helper.generateMaterialProps({ ...materialArgs })}
+        />
       </mesh>
-    )
-  }
+    );
+  };
 
   const renderPlane = () => {
-    const meshParams = getMeshParams([0, -2, 0], [-1.8, 0, 0], 4)
-    const materialArgs = getMaterialArgs('green')
+    const meshParams = helper.getMeshParams(
+      [0, -1, 0],
+      [-Math.PI * 0.5, 0, 0],
+      10
+    );
+    const materialArgs = helper.getMaterialArgs("greenyellow");
 
     return (
-      <mesh {...helper.generateMeshProps({...meshParams})} >
+      <mesh {...helper.generateMeshProps({ ...meshParams })}>
         <planeGeometry {...helper.generateGeoProps()} />
-        <meshBasicMaterial {...helper.generateMaterialProps({...materialArgs})} />
+        <meshStandardMaterial
+          {...helper.generateMaterialProps({ ...materialArgs })}
+        />
       </mesh>
-    )
-  }
+    );
+  };
+
+  const renderScene = () => {
+    return (
+      <>
+        <group ref={groupRef}>
+          {renderSphere()}
+          {renderBox()}
+        </group>
+        <CustomObject />
+        {renderPlane()}
+      </>
+    );
+  };
 
   return (
     <>
-      {renderSphere()}
-      {renderBox()}
-      {renderPlane()}
+      {renderApparatus()}
+      {renderEnvironment()}
+      {renderScene()}
     </>
-  )
-
+  );
 }
